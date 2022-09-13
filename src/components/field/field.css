@@ -1,0 +1,314 @@
+/* .field {
+  max-height: 1400px;
+  height: 95vh;
+  aspect-ratio: 1 / 1;
+  margin: 0 auto;
+} */
+
+.field {
+  max-height: 90vh;
+  height: 100vh;
+  aspect-ratio: 1 / 1;
+  margin: auto;
+}
+
+tr, td, tbody {
+  padding: 0;
+  margin: 0;
+}
+
+table.field {
+  border-collapse: collapse;
+}
+
+.player-a {
+  background-color: #b6a868;
+  
+}
+
+.player-b {
+  background-color: #799b71;
+}
+
+.neighbour {
+  background-color: #2c2c2c;
+}
+
+td {
+  border: 2px solid #545454
+}
+
+/* .box {
+  width: 11.11111111111111%;
+  background-color: green;
+} */
+
+/* 
+
+import React, { useEffect } from 'react'
+import '../../index.css'
+
+const Field = ({ fieldSize }) => {
+  let playingField = []
+  let freeBoxes = []
+
+  useEffect(() => {
+    if(fieldSize[0] !== 0 || fieldSize[1] !== 0) {
+      initializeField()
+    }
+  }, [fieldSize])
+
+  const initializeField = () => {
+    for (let x = 0; x < fieldSize[0] ; x++) {
+      playingField.push([0])
+      for (let y = 0; y < fieldSize[1] ; y++) {
+          playingField[x][y] = '0';
+          freeBoxes.push([x,y])
+      }
+    }
+
+    while(freeBoxes.length > 0) {
+      generatePlayer('A')
+      if(freeBoxes.length > 0) {
+        generatePlayer('B')
+      }
+    }
+  }
+  
+  const generatePlayer = (player) => {
+    const i = Math.floor(Math.random() * (freeBoxes.length - 1))
+    let [ x , y ] = freeBoxes[i]
+
+    freeBoxes.splice(i, 1)
+    
+    if(playingField[x][y] === '0') {
+      playingField[x][y] = player
+      if(x !== 0) {
+        if(y !== 0) {
+          playingField[x-1][y-1] = 'X'
+          deleteFreeBox(x-1, y-1)
+        }
+        playingField[x-1][y] = 'X'
+        deleteFreeBox(x-1, y)
+        if(y < fieldSize[1]-1) {
+          playingField[x-1][y+1] = 'X'
+          deleteFreeBox(x-1, y+1)
+        }
+      }
+      if(x < fieldSize[0]-1) {
+        if(y !== 0) {
+          playingField[x+1][y-1] = 'X'
+          deleteFreeBox(x+1, y-1)
+        }
+        playingField[x+1][y] = 'X'
+        deleteFreeBox(x+1, y)
+        if(y < fieldSize[1]-1) {  
+          playingField[x+1][y+1] = 'X'
+          deleteFreeBox(x+1, y+1)
+        }
+      }
+
+      if(y !== 0) {
+        playingField[x][y-1] = 'X'
+        deleteFreeBox(x, y-1)
+      }
+
+      if(y < fieldSize[1]-1) {
+        playingField[x][y+1] = 'X'
+        deleteFreeBox(x, y+1)
+      }
+    }
+  }
+
+  const deleteFreeBox = (x, y) => {
+    const index = isItemInArray(freeBoxes, [x, y])
+
+    if(index !== false) {
+      freeBoxes.splice(index, 1)
+    }
+  } 
+
+  const isItemInArray = (array, item) => {
+    for (let i = 0; i < array.length; i++) {
+        if (array[i][0] == item[0] && array[i][1] == item[1]) {
+            return i;
+        }
+    }
+    return false
+  }
+  
+  const boxes = playingField.map(item => {
+    item.map(item => {
+      console.log(item)
+      return (
+        <div className='box'>{item}</div>
+        )
+    })
+  })
+
+
+  return (
+    <div className='field'>
+      { boxes }
+    </div>
+  )
+}
+
+export default Field
+
+*/
+
+
+/* 
+
+import React, { useEffect, useState } from 'react'
+import '../../index.css'
+
+const Field = ({ fieldSize }) => {
+  const [ playingField, setPlayingField ] = useState([])
+  let freeBoxes = []
+
+  useEffect(() => {
+    if(fieldSize[0] !== 0 || fieldSize[1] !== 0) {
+      initializeField()
+    }
+  }, [fieldSize])
+
+  const initializeField = () => {
+    let tempArr = []
+    for (let x = 0; x < fieldSize[0] ; x++) {
+      tempArr.push([0])
+      //playingField.push([0])
+      for (let y = 0; y < fieldSize[1] ; y++) {
+          tempArr[x][y] = '0'
+          //playingField[x][y] = '0';
+          freeBoxes.push([x,y])
+      }
+    }
+    setPlayingField(tempArr)
+
+    while(freeBoxes.length > 0) {
+      generatePlayer('A')
+      if(freeBoxes.length > 0) {
+        generatePlayer('B')
+      }
+    }
+
+    console.log(playingField)
+  }
+  
+  const generatePlayer = (player) => {
+    const i = Math.floor(Math.random() * (freeBoxes.length - 1))
+    let [ x , y ] = freeBoxes[i]
+
+    freeBoxes.splice(i, 1)
+    console.log(playingField)
+
+    if(playingField[x][y] === '0') {
+      modifyPlayingField(x, y, player)
+      //playingField[x][y] = player
+      if(x !== 0) {
+
+        if(y !== 0) {
+          modifyPlayingField(x-1, y-1, 'X')
+          //playingField[x-1][y-1] = 'X'
+          deleteFreeBox(x-1, y-1)
+        }
+
+        modifyPlayingField(x-1, y, 'X')
+        //playingField[x-1][y] = 'X'
+        deleteFreeBox(x-1, y)
+        
+        if(y < fieldSize[1]-1) {
+          modifyPlayingField(x-1, y+1, 'X')
+          //playingField[x-1][y+1] = 'X'
+          deleteFreeBox(x-1, y+1)
+        }
+      }
+      
+      if(x < fieldSize[0]-1) {
+        if(y !== 0) {
+          modifyPlayingField(x+1, y-1, 'X')
+          //playingField[x+1][y-1] = 'X'
+          deleteFreeBox(x+1, y-1)
+        }
+        modifyPlayingField(x+1, y, 'X')
+        //playingField[x+1][y] = 'X'
+        deleteFreeBox(x+1, y)
+        if(y < fieldSize[1]-1) {  
+          modifyPlayingField(x+1, y+1, 'X')
+          //playingField[x+1][y+1] = 'X'
+          deleteFreeBox(x+1, y+1)
+        }
+      }
+
+      if(y !== 0) {
+        modifyPlayingField(x, y-1, 'X')
+        //playingField[x][y-1] = 'X'
+        deleteFreeBox(x, y-1)
+      }
+
+      if(y < fieldSize[1]-1) {
+        modifyPlayingField(x, y+1, 'X')
+        //playingField[x][y+1] = 'X'
+        deleteFreeBox(x, y+1)
+      }
+    }
+  }
+
+  const modifyPlayingField = (x, y, typeOfBox) => {
+    let tempArr = [...playingField]
+    tempArr[x][y] = typeOfBox
+    setPlayingField(tempArr)
+  }
+
+  const deleteFreeBox = (x, y) => {
+    const index = isItemInArray(freeBoxes, [x, y])
+
+    if(index !== false) {
+      freeBoxes.splice(index, 1)
+    }
+  } 
+
+  const isItemInArray = (array, item) => {
+    for (let i = 0; i < array.length; i++) {
+        if (array[i][0] == item[0] && array[i][1] == item[1]) {
+            return i;
+        }
+    }
+    return false
+  }
+  
+  console.log(playingField)
+  const boxes = playingField.map(item => {
+    return item.map(item2 => {
+      return (
+        <div className='box'>{item2}</div>
+        )
+    })
+  })
+
+
+  return (
+    <div className='field'>
+      { boxes }
+    </div>
+  )
+}
+
+export default Field
+
+*/
+
+/* const boxes = state.map(item => {
+  return (
+    <tr>
+    {item.map(item => {
+      return (
+        <td>{item}</td>
+        )
+    })}
+    </tr>
+
+  )
+}) */
