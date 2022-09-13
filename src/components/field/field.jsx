@@ -3,21 +3,13 @@ import '../../index.css'
 
 const Field = ({ fieldSize }) => {
   let playingField = []
-  const [ state, setState ] = useState([])
   let freeBoxes = []
-  let table = ''
-
+  const [ fieldState, setFieldState ] = useState([])
   
-
   useEffect(() => {
     if(fieldSize[0] !== 0 || fieldSize[1] !== 0) {
       initializeField()
     }
-
-    table = document.querySelector('table')// querySelector('table')
-
-
-
   }, [fieldSize])
 
   const initializeField = () => {
@@ -36,8 +28,7 @@ const Field = ({ fieldSize }) => {
       }
     }
 
-    setState([...playingField])
-    console.log(playingField)
+    setFieldState([...playingField])
   }
   
   const generatePlayer = (player) => {
@@ -45,9 +36,13 @@ const Field = ({ fieldSize }) => {
     let [ x , y ] = freeBoxes[i]
 
     freeBoxes.splice(i, 1)
-    
+    generateNeighbours(x, y, player)
+  }
+
+  const generateNeighbours = (x, y, player) => {
     if(playingField[x][y] === '0') {
       playingField[x][y] = player
+
       if(x !== 0) {
         if(y !== 0) {
           playingField[x-1][y-1] = 'X'
@@ -60,6 +55,7 @@ const Field = ({ fieldSize }) => {
           deleteFreeBox(x-1, y+1)
         }
       }
+
       if(x < fieldSize[0]-1) {
         if(y !== 0) {
           playingField[x+1][y-1] = 'X'
@@ -102,50 +98,31 @@ const Field = ({ fieldSize }) => {
     return false
   }
   
-  const boxes = state.map(item => {
+  const boxes = fieldState.map((item, index) => {
     return (
-      <tr>
-      {item.map(item => {
-        return (
-          <td 
-            className={
-              item === 'A' ? 'player-a' :
-              item === 'B' ? 'player-b' : 'neighbour'
-            }
-            > 
-          
-          </td>
-          )
-      })}
+      <tr key={index}>
+        {item.map((item, index) => {
+          return (
+            <td 
+              key={index}
+              className={
+                item === 'A' ? 'player-a' :
+                item === 'B' ? 'player-b' : 'neighbour'
+              }
+              > 
+            </td>
+            )
+        })}
       </tr>
-
     )
   })
 
-  const boxElements = Array.from(
-    document.getElementsByClassName('box')
-  );
-
-  console.log(100 / fieldSize[1])
-  console.log(100 / fieldSize[0])
-
-  boxElements.forEach(box => {
-    box.style.width = `${(100 / fieldSize[1])}%`;
-    box.style.height = `${(100 / fieldSize[0])}%`;
-    box.style.backgroundColor = 'purple';
-  });
-
-  
-
-
   return (
-    //<div className='field'>
-    <table className='field'>
+    <table className='field' id='field'>
       <tbody>
         { boxes }
       </tbody>  
     </table>
-    //</div>
   )
 }
 
