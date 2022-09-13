@@ -1,16 +1,6 @@
 .field {
-/*   max-width: 90vh;
-  width: 90%; */
-  /* aspect-ratio: 13 / 12; */
   margin: auto;
 }
-
-/* .field {
-  max-height: 90vh;
-  height: 100vh;
-  aspect-ratio: 12 / 13;
-  margin: auto;
-} */
 
 tr, td, tbody {
   padding: 0;
